@@ -1,0 +1,27 @@
+{
+  "name": "OmniTestExpress",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Basic Auth API for OmniTest built with Express and MongoDB",
+  "keywords": [],
+  "author": "Miguel Bolivar",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jwt-async": "^1.1.2",
+    "mongoose": "^4.7.4",
+    "mongoose-auto-increment": "^5.0.1",
+    "swagger-express-mw": "^0.1.0"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}
