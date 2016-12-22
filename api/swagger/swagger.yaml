@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
+  title: OmniTest - Basic Auth API
 # during dev, should point to your local machine
-host: localhost:10010
+host: localhost:3000
 # basePath prefixes all resource paths 
 basePath: /
 # 
@@ -18,43 +18,146 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+  /api/users:
     get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
+      description: Get a complete list of the users in the MongoDB. You need to hace an authorization header with a valid JWT in order to gain access to this information.
+      operationId: getAllUsers
       parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
+        - name: authorization
+          in: header
+          description: JWT token given in /api/signin or /api/signup
+          required: true
           type: string
       responses:
         "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
+          description: Success, complete array with all users of DB
         default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /swagger:
-    x-swagger-pipe: swagger_raw
-# complex objects have schema definitions
-definitions:
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
-  ErrorResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
+          description: Error when calling, with error message.
+  /api/users/{user_id}:
+    get:
+      description: Get a single user from the ID in the parameters. Valid JWT must be present in order to be able to retrieve data.
+      operationId: getUser
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token given in /api/signin or /api/signup
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: User's ID
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success, object with user data
+        default:
+          description: Error when calling, with error message.
+    put:
+      description: Update user's information, only the owner of the account could do this with a valid JWT that corresponds to this user.
+      operationId: updateUser
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token given in /api/signin or /api/signup
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: User's ID
+          required: true
+          type: integer
+        - name: email
+          in: formData
+          description: Uer's email (unique)
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: User's password
+          required: true
+          type: string
+        - name: name
+          in: formData
+          description: User's name
+          required: true
+          type: string
+        - name: last_name
+          in: formData
+          description: User's last_name
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success, message indicating operation.
+        default:
+          description: Error when calling, with error message.
+    delete:
+      description: Delete the specified user, only the owner of the account could do this with a valid JWT that corresponds to this user.
+      operationId: deleteUser
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token given in /api/signin or /api/signup
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: User's ID
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success, message indicating operation.
+        default:
+          description: Error when calling, with error message.
+  /api/signup:
+     post:
+      description: Sign up route in order to register new users.
+      operationId: registerUser
+      parameters:
+        - name: email
+          in: formData
+          description: New user's email (unique)
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: New user's password
+          required: true
+          type: string
+        - name: name
+          in: formData
+          description: New user's name
+          required: true
+          type: string
+        - name: last_name
+          in: formData
+          description: New user's last_name
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success, you'll also get the JWT token in a field named auth_token
+        default:
+          description: Error with specified message of what happened
+  /api/signin:
+    post:
+      description: Sign in route in order to login into the API and get JWT.
+      operationId: loginUser
+      parameters:
+        - name: email
+          in: formData
+          description: User's email (unique)
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: User's password
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success, you'll also get the JWT token in a field named auth_token
+        default:
+          description: Error with specified message of what happened

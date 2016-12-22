@@ -14,7 +14,8 @@
     "jwt-async": "^1.1.2",
     "mongoose": "^4.7.4",
     "mongoose-auto-increment": "^5.0.1",
-    "swagger-express-mw": "^0.1.0"
+    "swagger-express-mw": "^0.1.0",
+    "swagger-tools": "^0.10.1"
   },
   "devDependencies": {
     "should": "^7.1.0",

@@ -114,6 +114,8 @@ module.exports = function(app){
             res.json({message:err});
             return;
           }
+          console.log("ESTA LLEGANDO");
+          console.log(req.params);
           User.findOne({ _id : req.params.user_id },function(err,user){
             if(err){
               res.json({message:"User doesn't exist"});
