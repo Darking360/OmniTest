@@ -1,4 +1,4 @@
-# Project Title
+# OmniTest - Basic Auth API
 
 Basic Auth API built with Express and MongoDB, with documentation thanks to Swagger engine.
 
